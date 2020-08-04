@@ -7,12 +7,18 @@ const Main = (props) => {
             return <option key={item.departmentId} value={item.displayName}>{item.displayName}</option>
         })
     }
+    const displayImageCards = (images) =>{
+        return images.map(item => <ImageCard image={item}/>)
+    }
+
     return(
         <div>
             <select onChange={props.handleChange}>
             {displayDepartments()}
             </select>
-           {props.image !== false?<ImageCard image={props.image} next={props.next}/>:null}
+           {props.image !== []?displayImageCards(props.images):null}
+           <button onClick={props.next}>Next</button>
+
         </div>
     )
 }
