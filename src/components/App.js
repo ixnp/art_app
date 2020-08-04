@@ -14,7 +14,12 @@ class App extends React.Component {
   componentDidMount(){
     fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments')
     .then(res => res.json())
-    .then(data => this.setState({departments:data}))
+    .then(data => {
+      this.setState({departments:data})
+      return data
+    })
+    .then(data => this.fetchDepartment(data[0]))
+    
   }
   
   fetchArt = (art, allObjectsInDepartment=this.state.allObjectsInDepartment) => {
@@ -25,11 +30,14 @@ class App extends React.Component {
     })
   }
 
-  handleChange = (e) => {
-    // fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${e.target.value}`)
-    fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${e.target.value}`)
+  fetchDepartment = (department) => {
+    fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${department}`)
     .then(res => res.json())
     .then(data => this.fetchArt(data.objectIDs[this.state.departmentIDX], data.objectIDs))
+  }
+
+  handleChange = (e) => {
+    this.fetchDepartment(e.target.value)
 
   }
   handleNext = () =>{
