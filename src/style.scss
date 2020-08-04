@@ -1,0 +1,13 @@
+.app{
+    display: flex;
+    justify-content: space-between;
+}
+
+.side_bar{
+    background-color: gray;
+    color: white;
+    padding:2%;
+    li{
+        list-style: none;
+    }
+}

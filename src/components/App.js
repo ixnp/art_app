@@ -1,5 +1,6 @@
 import React from 'react';
 import Main from './Main'
+import Side from './Side'
 import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 
 class App extends React.Component {
@@ -30,7 +31,6 @@ class App extends React.Component {
     if(this.state.currentObjectsInDepartment.length > 9) result = 'NEW_OBJ'
     switch(result){
       case 'NEW_OBJ': 
-        console.log(this.state.currentObjectsInDepartment, prevState)
         if (this.state.currentObjectsInDepartment[0] !== prevState.currentObjectsInDepartment[0]) {
           this.state.currentObjectsInDepartment.forEach(item => this.fetchArt(item))
           this.setState({departmentIDXStart:this.state.departmentIDXStart+5, departmentIDXEnd:this.state.departmentIDXEnd+5})
@@ -57,7 +57,6 @@ class App extends React.Component {
       return data 
     })
     .then(data => {
-      console.log(this.state)
       this.state.currentObjectsInDepartment.forEach(item => this.fetchArt(item) )
     })
   }
@@ -69,13 +68,14 @@ class App extends React.Component {
 
   }
   handleNext = () =>{
-    console.log(this.state)
     this.setState({currentObjectsInDepartment: this.state.allObjectsInDepartment.splice(this.state.departmentIDXStart,this.state.departmentIDXEnd)})
   }
   render(){
     return (
-      <div className="App">
+      <div className="app">
+    
         <Main departments={this.state.departments} handleChange={this.handleChange} images={this.state.selectedImages} next={this.handleNext}/>
+        <Side />
       </div>
     );
   }
