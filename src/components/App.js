@@ -28,16 +28,13 @@ class App extends React.Component {
 
   componentDidUpdate(prePops,prevState) {
     let result = ''
-    if(this.state.currentObjectsInDepartment.length > 9) result = 'NEW_OBJ'
-    switch(result){
-      case 'NEW_OBJ': 
-        if (this.state.currentObjectsInDepartment[0] !== prevState.currentObjectsInDepartment[0]) {
-          this.state.currentObjectsInDepartment.forEach(item => this.fetchArt(item))
-          this.setState({departmentIDXStart:this.state.departmentIDXStart+5, departmentIDXEnd:this.state.departmentIDXEnd+5})
-        }
-        default: 
-        return this.state
-    }
+    if(this.state.currentObjectsInDepartment.length > 9){
+      if (this.state.currentObjectsInDepartment[0] !== prevState.currentObjectsInDepartment[0]) {
+        this.state.currentObjectsInDepartment.forEach(item => this.fetchArt(item))
+        this.setState({departmentIDXStart:this.state.departmentIDXStart+5, departmentIDXEnd:this.state.departmentIDXEnd+5})
+      }
+    } 
+ 
 
   }
   
@@ -50,16 +47,21 @@ class App extends React.Component {
   }
 
   fetchDepartment = (department) => {
+    console.log(this.state)
     fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${department}`)
     .then(res => res.json())
     .then(data => {
-      this.setState({allObjectsInDepartment:data.objectIDs, currentObjectsInDepartment: data.objectIDs.splice(this.state.departmentIDXStart,this.state.departmentIDXEnd),departmentIDXStart:this.state.departmentIDXStart+5,departmentIDXEnd:this.state.departmentIDXEnd+5  })
+      this.setState({selectedImages:[],allObjectsInDepartment:data.objectIDs, currentObjectsInDepartment: data.objectIDs.splice(this.state.departmentIDXStart,this.state.departmentIDXEnd),departmentIDXStart:this.state.departmentIDXStart+5,departmentIDXEnd:this.state.departmentIDXEnd+5  })
       return data 
     })
     .then(data => {
-      this.state.currentObjectsInDepartment.forEach(item => this.fetchArt(item) )
+       this.state.currentObjectsInDepartment.forEach(item => this.fetchArt(item))
+       console.log(this.state)
     })
+    
   }
+
+  
 
   
 
