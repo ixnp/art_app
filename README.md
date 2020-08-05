@@ -3,8 +3,8 @@
  - [x] image on load
  - [x] 5 images on page
  - [x] load more button
- - sidebar links to favorites  
- - clear images on department change 
+ - [x] sidebar links to favorites  
+ - [x] clear images on department change 
  - hovering over an image brings up it's details 
  - search bar 
  - can select other apis

@@ -8,7 +8,7 @@ const Main = (props) => {
         })
     }
     const displayImageCards = (images) =>{
-        return images.map(item => <ImageCard image={item}/>)
+        return images.map(item => <ImageCard image={item} handleImageHover={props.handleImageHover}/>)
     }
 
     return(

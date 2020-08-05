@@ -6,10 +6,10 @@ import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils';
 class App extends React.Component {
   state={
     departments:{departments:[]},
+    currentDepartmentID:0,
     allObjectsInDepartment:[],
     currentObjectsInDepartment:[],
     departmentIDXStart:0,
-  
     selectedDepartment:[],
     selectedImages:[],
     art_arr:[]
@@ -51,9 +51,7 @@ class App extends React.Component {
     fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${department}`)
     .then(res => res.json())
     .then(data => {
-      console.log(this.state.departmentIDXStart)
-      console.log(data.objectIDs.splice(this.state.departmentIDXStart,5))
-      this.setState({selectedImages:[],allObjectsInDepartment:data.objectIDs, currentObjectsInDepartment: data.objectIDs.splice(this.state.departmentIDXStart, 5),departmentIDXStart:0})
+      this.setState({selectedImages:[],allObjectsInDepartment:data.objectIDs, currentObjectsInDepartment: data.objectIDs.splice(this.state.departmentIDXStart, 5),departmentIDXStart:0, currentDepartmentID:department })
       return data 
     })
     .then(data => {
@@ -63,22 +61,30 @@ class App extends React.Component {
     
   }
 
-  
-
-  
-
   handleChange = (e) => {
     this.fetchDepartment(e.target.value)
 
   }
   handleNext = () =>{
-    this.setState({currentObjectsInDepartment: this.state.allObjectsInDepartment.splice(this.state.departmentIDXStart,this.state.departmentIDXEnd)})
+    console.log(this.state.allObjectsInDepartment.length)
+    if(this.state.allObjectsInDepartment.length == 5){
+      this.fetchDepartment(this.state.department)
+    }else {
+      this.setState({currentObjectsInDepartment: this.state.allObjectsInDepartment.splice(this.state.departmentIDXStart+5, 5), selectedImages:[]})
+      this.state.currentObjectsInDepartment.forEach(item => this.fetchArt(item) )
+    }
+
+  }
+
+  handleImageHover(){
+    console.log('hover')
   }
   render(){
+    
     return (
       <div className="app">
     
-        <Main departments={this.state.departments} handleChange={this.handleChange} images={this.state.selectedImages} next={this.handleNext}/>
+        <Main departments={this.state.departments} handleChange={this.handleChange} images={this.state.selectedImages} next={this.handleNext} handleImageHover={this.handleImageHover}/>
         <Side />
       </div>
     );
