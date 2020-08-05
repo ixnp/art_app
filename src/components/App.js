@@ -9,7 +9,7 @@ class App extends React.Component {
     allObjectsInDepartment:[],
     currentObjectsInDepartment:[],
     departmentIDXStart:0,
-    departmentIDXEnd: 5,
+  
     selectedDepartment:[],
     selectedImages:[],
     art_arr:[]
@@ -51,7 +51,9 @@ class App extends React.Component {
     fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${department}`)
     .then(res => res.json())
     .then(data => {
-      this.setState({selectedImages:[],allObjectsInDepartment:data.objectIDs, currentObjectsInDepartment: data.objectIDs.splice(this.state.departmentIDXStart,this.state.departmentIDXEnd),departmentIDXStart:this.state.departmentIDXStart+5,departmentIDXEnd:this.state.departmentIDXEnd+5  })
+      console.log(this.state.departmentIDXStart)
+      console.log(data.objectIDs.splice(this.state.departmentIDXStart,5))
+      this.setState({selectedImages:[],allObjectsInDepartment:data.objectIDs, currentObjectsInDepartment: data.objectIDs.splice(this.state.departmentIDXStart, 5),departmentIDXStart:0})
       return data 
     })
     .then(data => {
